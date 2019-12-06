@@ -1,0 +1,27 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Rental Users</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>User</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @rental_users.each do |rental_user| %>
+      <tr>
+        <td><%= rental_user.user %></td>
+        <td><%= link_to 'Show', rental_user %></td>
+        <td><%= link_to 'Edit', edit_rental_user_path(rental_user) %></td>
+        <td><%= link_to 'Destroy', rental_user, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Rental User', new_rental_user_path %>

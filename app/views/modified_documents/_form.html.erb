@@ -1,0 +1,32 @@
+<%= form_with(model: modified_document, local: true) do |form| %>
+  <% if modified_document.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(modified_document.errors.count, "error") %> prohibited this modified_document from being saved:</h2>
+
+      <ul>
+      <% modified_document.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :price %>
+    <%= form.text_field :price %>
+  </div>
+
+  <div class="field">
+    <%= form.label :lat_destination %>
+    <%= form.text_field :lat_destination %>
+  </div>
+
+  <div class="field">
+    <%= form.label :long_destination %>
+    <%= form.text_field :long_destination %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

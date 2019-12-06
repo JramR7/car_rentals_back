@@ -1,0 +1,31 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Modified Documents</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Price</th>
+      <th>Lat destination</th>
+      <th>Long destination</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @modified_documents.each do |modified_document| %>
+      <tr>
+        <td><%= modified_document.price %></td>
+        <td><%= modified_document.lat_destination %></td>
+        <td><%= modified_document.long_destination %></td>
+        <td><%= link_to 'Show', modified_document %></td>
+        <td><%= link_to 'Edit', edit_modified_document_path(modified_document) %></td>
+        <td><%= link_to 'Destroy', modified_document, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Modified Document', new_modified_document_path %>

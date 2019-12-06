@@ -1,0 +1,19 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Price:</strong>
+  <%= @modified_document.price %>
+</p>
+
+<p>
+  <strong>Lat destination:</strong>
+  <%= @modified_document.lat_destination %>
+</p>
+
+<p>
+  <strong>Long destination:</strong>
+  <%= @modified_document.long_destination %>
+</p>
+
+<%= link_to 'Edit', edit_modified_document_path(@modified_document) %> |
+<%= link_to 'Back', modified_documents_path %>

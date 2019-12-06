@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  lat_origin: 9.99
+  long_origin: 9.99
+  lat_destination: 9.99
+  long_destination: 9.99
+  price: 9.99
+  address_origin: MyString
+  address_destination: MyString
+
+two:
+  lat_origin: 9.99
+  long_origin: 9.99
+  lat_destination: 9.99
+  long_destination: 9.99
+  price: 9.99
+  address_origin: MyString
+  address_destination: MyString
