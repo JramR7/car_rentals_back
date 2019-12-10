@@ -49,6 +49,14 @@ class UsersController < ApplicationController
     end
   end
 
+    def count_users
+        @users = User.count
+        @owners = Owner.count
+        @rental_users = RentalUser.count
+
+        render json:{users: @users, owners: @owners, rental_users: @rental_users}
+    end
+
   private
     def user_params
       params.require(:user).permit(:name, :phone, :email, :id_document, :address)

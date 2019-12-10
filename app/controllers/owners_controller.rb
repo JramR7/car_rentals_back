@@ -1,5 +1,6 @@
 class OwnersController < ApplicationController
     
+    
   # GET /owners
   # GET /owners.json
   def index
@@ -18,7 +19,7 @@ class OwnersController < ApplicationController
   # POST /owners.json
   def create
     @user = User.new(user_params)
-    @owner = @owner.build_referrer(owner_params)
+    @owner = @user.build_owner(owner_params)
 
     User.transaction do
       if @user.save
@@ -63,6 +64,6 @@ class OwnersController < ApplicationController
     end
 
     def owner_params
-      params.require(:owner).permit(:property_document, :licence, :user_id)
+      params.require(:owner).permit(:licence)
     end
 end

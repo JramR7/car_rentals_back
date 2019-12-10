@@ -16,7 +16,9 @@ class CarsController < ApplicationController
   # POST /cars
   # POST /cars.json
   def create
-    @car = Car.new(car_params)
+    @user = User.find_by!(id_document: owner_params[:id_document])
+    @owner = Owner.find_by!(user_id: @user.id)
+    @car = @owner.car.build(car_params)
    
     if @car.save
       render json: @car, status: :ok
@@ -50,7 +52,11 @@ class CarsController < ApplicationController
   end
 
   private
+    def owner_params
+        params.require(:owner).permit(:id_document)
+    end
+
     def car_params
-      params.require(:car).permit(:plate, :color, :model, :year, :brand, :owner_id)
+      params.require(:car).permit(:property_document, :plate, :color, :model, :year, :brand)
     end
 end

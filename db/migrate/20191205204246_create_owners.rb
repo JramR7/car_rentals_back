@@ -1,7 +1,6 @@
 class CreateOwners < ActiveRecord::Migration[5.2]
   def change
     create_table :owners do |t|
-      t.string :property_document
       t.string :licence
       t.references :user, foreign_key: true
 

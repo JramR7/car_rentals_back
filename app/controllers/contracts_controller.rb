@@ -1,4 +1,5 @@
 class ContractsController < ApplicationController
+    include ContractsHelper
   # GET /contracts
   # GET /contracts.json
   def index
@@ -16,12 +17,39 @@ class ContractsController < ApplicationController
   # POST /contracts
   # POST /contracts.json
   def create
-    @contract = Contract.new(contract_params)
-   
-    if @contract.save
-      render json: @contract, status: :ok
-    else
-      render json: @contract.errors, status: :unprocessable_entity
+    @user_own = User.find_by!(id_document: owner_params[:id_document])
+    @owner = Owner.find_by!(user_id: @user_own.id)
+
+    @user_rent = User.find_by!(id_document: rental_user_params[:id_document])
+    @rental_user = RentalUser.find_by!(user_id: @user_rent.id)
+
+    @car = Car.find_by!(plate: owner_params[:car_plate])
+
+    @company = Company.find_by!(id: 1)
+    
+    price = calculate_price()
+    actual_params = trip_params.merge(price: price)
+    @trip = Trip.new(actual_params)
+    @contract = @trip.build_contract(
+                                car_id: @car.id, 
+                                rental_user_id: @rental_user.id, 
+                                company_id: 1)
+
+
+    pdf_data = [@user_own, @user_rent, @car, @trip, @company]
+    
+    Trip.transaction do
+      if @trip.save
+        if @contract.save
+            ContractMailer.contract_email(@user_own, pdf_data).deliver
+            ContractMailer.contract_email(@user_rent, pdf_data).deliver
+            render json: @contract, status: :ok
+        else
+          render json: @contract.errors, status: :unprocessable_entity
+        end
+      else
+        render json: @trip.errors, status: :unprocessable_entity
+      end
     end
   end
 
@@ -50,7 +78,37 @@ class ContractsController < ApplicationController
   end
 
   private
-    def contract_params
-      params.require(:contract).permit(:car_id, :rental_contract_id, :trip_id, :company_id)
+    def calculate_distance()
+        Geocoder.config()
+        origin = [trip_params[:lat_origin], trip_params[:long_origin]]
+        destination = [trip_params[:lat_destination], trip_params[:long_destination]]
+        
+        # transform to km
+        Geocoder::Calculations.distance_between(origin, destination) * 1.60934
+    end
+
+    def calculate_price()
+        distance = calculate_distance()
+
+        # 1000 COP for each km
+        distance * 1500
+    end
+
+    def owner_params
+        params.require(:owner).permit(:id_document, :car_plate)
+    end
+
+    def rental_user_params
+        params.require(:rental_user).permit(:id_document)
+    end
+
+    def trip_params
+        params.require(:trip).permit(:lat_origin, 
+                                     :long_origin, 
+                                     :lat_destination, 
+                                     :long_destination, 
+                                     :address_origin, 
+                                     :address_destination, 
+                                     :price)
     end
 end

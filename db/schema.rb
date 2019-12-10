@@ -13,6 +13,7 @@
 ActiveRecord::Schema.define(version: 2019_12_05_212800) do
 
   create_table "cars", force: :cascade do |t|
+    t.string "property_document"
     t.string "plate"
     t.string "color"
     t.string "model"
@@ -57,7 +58,6 @@ ActiveRecord::Schema.define(version: 2019_12_05_212800) do
   end
 
   create_table "owners", force: :cascade do |t|
-    t.string "property_document"
     t.string "licence"
     t.integer "user_id"
     t.datetime "created_at", null: false
